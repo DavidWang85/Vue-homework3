@@ -50,11 +50,24 @@ const app = createApp({
                 this.isNew = true; //如果狀態是isNew我們在data.isNew判斷為true
             }else if(status === 'edit'){   //如果是編輯產品跑這段
                 this.tempProduct = {...product}; //使用淺拷貝解決傳參考的問題
-                productModal.show(); //打開modal 
-                this.isNew = false; //如果狀態不是isNew我們在data.isNew判斷為false
+                if(this.tempProduct.imagesUrl){
+                    this.isNew = false;
+                    productModal.show();
+                }
+                else{
+                    this.tempProduct.imagesUrl=[];
+                    this.isNew = false; //如果狀態不是isNew我們在data.isNew判斷為false
+                    productModal.show(); //打開modal 
+                } 
             }else if(status === 'delete'){  //如果是刪除產品跑這段
-                delProductModal.show(); //打開刪除的modal
-                this.tempProduct = {...product};  //使用淺拷貝把品項(item)帶過來
+                this.tempProduct = {...product};
+                if(this.tempProduct.imagesUrl){
+                    delProductModal.show();
+                }
+                else{
+                    this.tempProduct.imagesUrl=[];
+                    delProductModal.show(); 
+                } 
             }
         },
         //建立新增產品方法
