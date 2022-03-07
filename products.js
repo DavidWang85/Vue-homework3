@@ -28,6 +28,9 @@ const app = createApp({
                 .then( () => {
                     this.getProducts(); 
                 })
+                .catch( () => {
+                    window.location = './login.html';
+                })
         },
         getProducts(){
             const url = `${site}api/${api_path}/admin/products/all`; 

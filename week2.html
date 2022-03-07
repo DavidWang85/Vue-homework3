@@ -85,12 +85,12 @@
                     <div class="d-flex">
                       <p class="card-text me-2">{{ tempProducts.price }}</p>
                       <p class="card-text text-secondary"><del>{{ tempProducts.origin_price  }}</del></p>
-                      {{ tempProducts.unit }} / 元
+                      元 / {{ tempProducts.unit }}
                     </div>
                   </div>
                 </div>
                 <!-- 使用v-for一筆筆帶入圖片，記得加key值 -->
-                <template v-for="images in tempProducts.imagesUrl" :key="tempProducts.id">
+                <template v-for="images in tempProducts.imagesUrl" :key="'img'+index">
                   <img :src="images" alt="" class="images m-2">
                 </template>
               </template>
