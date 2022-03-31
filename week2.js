@@ -15,7 +15,6 @@ const app = createApp({
             const token = document.cookie.replace(/(?:(?:^|.*;\s*)davidToken\s*\=\s*([^;]*).*$)|^.*$/, "$1");
             axios.defaults.headers.common['Authorization'] = token;
             console.log(token);
-
             const url = `${site}api/user/check`;
             axios.post(url)
                 .then( () => {

@@ -1,4 +1,7 @@
 import { createApp } from "https://cdnjs.cloudflare.com/ajax/libs/vue/3.2.31/vue.esm-browser.min.js";
+import pagination from "./pagination.js";
+import productmodal from "./productmodal.js";
+import delproductmodal from "./delproductmodal.js";
 
 const site = 'https://vue3-course-api.hexschool.io/v2/';
 const api_path = 'david-frontend'; 
@@ -8,6 +11,11 @@ let productModal = {};
 let delProductModal = {};
 
 const app = createApp({
+    components: {
+        pagination,
+        productmodal,
+        delproductmodal,
+    },
     data(){
         return{
            products: [],
@@ -15,6 +23,7 @@ const app = createApp({
                imagesUrl: [],
            },
            isNew: false, //新增一個變數isNew，判斷新增方法或編輯方法
+           pagination: [],
         }
     },
     methods: {
@@ -32,11 +41,12 @@ const app = createApp({
                     window.location = './login.html';
                 })
         },
-        getProducts(){
-            const url = `${site}api/${api_path}/admin/products/all`; 
+        getProducts(page = 1){
+            const url = `${site}api/${api_path}/admin/products/?page=${page}`; 
             axios.get(url)
                 .then(res => {
                     this.products = res.data.products;  //把外部伺服器傳來的資料放入自己的products中
+                    this.pagination = res.data.pagination;  //把外部傳來的資料放入自己的products中
                 })
         },
         //參數statue代表帶入的狀態
@@ -73,37 +83,6 @@ const app = createApp({
                 } 
             }
         },
-        //建立新增產品方法
-        //從addProducts改名為updateProduct讓他可以新增和編輯產品
-        updateProduct(){
-            //以新增方法當作預設
-            //如果data.isNew裡面的布林值是ture時
-            let url = `${site}api/${api_path}/admin/product`;  //新增功能的API
-            let method = 'post';                                                      //新增功能的遠端傳送方法
-
-            //如果data.isNew裡面的布林值不是ture時(編輯)
-            if (!this.isNew){
-                url = `${site}api/${api_path}/admin/product/${this.tempProduct.id}`;   //編輯功能的API
-                method = 'put';                                                        //編輯功能的遠端傳送方法
-    
-            }
-            //使用中括號帶變數來切換
-            axios[method](url, {data: this.tempProduct})
-                .then(res => {
-                    this.getProducts(); //1.因為伺服器更新的本地端卻還沒，所以重新取得產品列表
-                    productModal.hide(); //2.使用完把modal關起來
-                })
-        },
-        //建立刪除產品的方法
-        delProduct(){
-            let url = `${site}api/${api_path}/admin/product/${this.tempProduct.id}`;  //新增功能的API
-            
-            axios.delete(url)
-                .then(res => {
-                    this.getProducts(); //1.所以重新取得產品列表
-                    delProductModal.hide(); //2.使用完把modal關起來
-                })
-        }
     },
     mounted(){
 		this.checkLogin();
@@ -117,4 +96,5 @@ const app = createApp({
         });
     }
 });
+
 app.mount('#app');

@@ -19,9 +19,7 @@ const app = createApp({
                     const {token, expired} = res.data;
                     console.log(token, expired);
                     document.cookie = `davidToken=${token}; expires=${new Date(expired)}`;
-                    //新的code
-                    //當我登入成功並且把cookie存好時，讓他可以轉址到week2的頁面
-                    window.location = './week2.html';
+                    window.location = './products_week4.html';
 
                 })
                 .catch( (err) => {
